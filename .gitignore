@@ -216,3 +216,17 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Playwright
+playwright-report/
+test-results/
+
+# VS Code workspace (optional)
+.vscode/
+
+# Allure Reports
+allure-results/
+allure-report/
+
+# Python environment files
+.python-version
