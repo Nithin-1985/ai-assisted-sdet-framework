@@ -49,3 +49,24 @@ def test_create_user():
     
 
 
+def test_update_user():
+
+    payload = {
+        "name": "Nithin Updated",
+        "username": "nithinp",
+        "email": "nithin.updated@example.com"
+    }
+
+    response = requests.put(
+        f"{BASE_URL}/users/1",
+        json=payload
+    )
+
+    assert response.status_code == 200
+
+    body = response.json()
+
+    assert body["name"] == "Nithin Updated"
+    assert body["username"] == "nithinp"
+    assert body["email"] == "nithin.updated@example.com"
+    assert body["id"] == 1
