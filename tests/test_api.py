@@ -70,3 +70,12 @@ def test_update_user():
     assert body["username"] == "nithinp"
     assert body["email"] == "nithin.updated@example.com"
     assert body["id"] == 1
+
+def test_delete_user():
+
+    response = requests.delete(f"{BASE_URL}/users/1")
+
+    assert response.status_code == 200
+
+    body = response.json()
+    assert body == {}
