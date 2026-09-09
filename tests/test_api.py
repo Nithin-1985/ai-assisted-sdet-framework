@@ -1,10 +1,9 @@
-import requests
-BASE_URL = "https://jsonplaceholder.typicode.com"
 
 
 
-def test_get_existing_user():
-    response = requests.get(f"{BASE_URL}/users/1")
+
+def test_get_existing_user(api_client):
+    response = api_client.get_user(1)
 
     assert response.status_code == 200
 
@@ -15,8 +14,8 @@ def test_get_existing_user():
     assert user["email"] == "Sincere@april.biz"
 
 
-def test_get_non_existing_user():
-    response = requests.get(f"{BASE_URL}/users/999")
+def test_get_non_existing_user(api_client):
+    response = api_client.get_user(999)
 
     assert response.status_code == 404
 
@@ -25,17 +24,14 @@ def test_get_non_existing_user():
     assert body == {}
 
 
-def test_create_user():
+def test_create_user(api_client):
     payload = {
         "name": "Nithin",
         "username": "nithinp",
         "email": "nithin@example.com"
     }
 
-    response = requests.post(
-        f"{BASE_URL}/users",
-        json=payload
-    )
+    response = api_client.create_user(payload)
 
     assert response.status_code == 201
 
@@ -49,7 +45,7 @@ def test_create_user():
     
 
 
-def test_update_user():
+def test_update_user(api_client):
 
     payload = {
         "name": "Nithin Updated",
@@ -57,10 +53,7 @@ def test_update_user():
         "email": "nithin.updated@example.com"
     }
 
-    response = requests.put(
-        f"{BASE_URL}/users/1",
-        json=payload
-    )
+    response = api_client.update_user(1, payload)
 
     assert response.status_code == 200
 
@@ -71,9 +64,9 @@ def test_update_user():
     assert body["email"] == "nithin.updated@example.com"
     assert body["id"] == 1
 
-def test_delete_user():
+def test_delete_user(api_client):
 
-    response = requests.delete(f"{BASE_URL}/users/1")
+    response = api_client.delete_user(1)
 
     assert response.status_code == 200
 
