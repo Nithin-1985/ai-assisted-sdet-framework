@@ -4,7 +4,7 @@ import requests
 class APIClient:
 
     def __init__(self, base_url):
-        self.base_url = base_url
+        self.base_url = base_url.rstrip("/")
 
     def get_user(self, user_id):
         return requests.get(
