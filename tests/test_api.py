@@ -1,17 +1,25 @@
 
+import pytest
 
+@pytest.mark.parametrize(
+    "user_id, expected_name, expected_email",
+    [
+        (1, "Leanne Graham", "Sincere@april.biz"),
+        (2, "Ervin Howell", "Shanna@melissa.tv"),
+        (3, "Clementine Bauch", "Nathan@yesenia.net"),
+    ],
+)
 
-
-def test_get_existing_user(api_client):
-    response = api_client.get_user(1)
+def test_get_existing_user(api_client,user_id, expected_name, expected_email):
+    response = api_client.get_user(user_id)
 
     assert response.status_code == 200
 
     user = response.json()
 
-    assert user["id"] == 1
-    assert user["name"] == "Leanne Graham"
-    assert user["email"] == "Sincere@april.biz"
+    assert user["id"] == user_id
+    assert user["name"] == expected_name
+    assert user["email"] == expected_email
 
 
 def test_get_non_existing_user(api_client):
