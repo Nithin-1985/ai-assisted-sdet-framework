@@ -20,6 +20,11 @@ def login_page(page: Page):
     return LoginPage(page)
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def api_client():
     return APIClient(BASE_URL)
+
+
+
+
+
