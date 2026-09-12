@@ -19,6 +19,13 @@ def playwright_home(page: Page):
 def login_page(page: Page):
     return LoginPage(page)
 
+@pytest.fixture
+def logged_in_page(login_page):
+    login_page.open()
+    login_page.login("tomsmith", "SuperSecretPassword!")
+
+    return login_page.page
+
 
 @pytest.fixture(scope="session")
 def api_client():
