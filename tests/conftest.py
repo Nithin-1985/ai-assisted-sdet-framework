@@ -1,3 +1,15 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
+from config.settings import (
+    BASE_URL,
+    API_USERNAME,
+    API_PASSWORD,
+    BROWSER,
+)
+
+import os
 import pytest
 from playwright.sync_api import Page
 from pages.login_page import LoginPage
@@ -34,4 +46,11 @@ def api_client():
 
 
 
-
+@pytest.fixture(scope="session")
+def config():
+    return {
+        "base_url": BASE_URL,
+        "username": API_USERNAME,
+        "password": API_PASSWORD,
+        "browser": BROWSER,
+    }
