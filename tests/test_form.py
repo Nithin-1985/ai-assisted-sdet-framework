@@ -36,3 +36,5 @@ def test_logout_button_visible(logged_in_page):
     expect(
         logged_in_page.get_by_role("link", name="Logout")
     ).to_be_visible()
+
+
