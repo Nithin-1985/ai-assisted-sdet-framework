@@ -51,3 +51,26 @@ def config():
         "password": API_PASSWORD,
         "browser": BROWSER,
     }
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+
+    print(f"Test phase: {report.when} | Result: {report.outcome}")
+
+    if report.when == "call" and report.failed:
+        print("Test failed - screenshot needed")
+
+        login_page = item.funcargs.get("login_page")
+        page = item.funcargs.get("page")
+
+        if login_page:
+            page = login_page.page
+
+        if page:
+            os.makedirs("screenshots", exist_ok=True)
+
+            screenshot_path = f"screenshots/{item.name}.png"
+            page.screenshot(path=screenshot_path)
+            print(f"Screenshot saved: {screenshot_path}")
