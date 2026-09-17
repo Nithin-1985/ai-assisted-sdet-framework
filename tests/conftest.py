@@ -1,3 +1,6 @@
+import pytest
+import os
+import allure
 
 from config.settings import (
     BASE_URL,
@@ -6,8 +9,6 @@ from config.settings import (
     BROWSER,
 )
 
-import os
-import pytest
 from playwright.sync_api import Page
 from pages.login_page import LoginPage
 from api.client import APIClient
@@ -74,3 +75,8 @@ def pytest_runtest_makereport(item, call):
             screenshot_path = f"screenshots/{item.name}.png"
             page.screenshot(path=screenshot_path)
             print(f"Screenshot saved: {screenshot_path}")
+            allure.attach.file(
+                screenshot_path,
+                name="Failure Screenshot",
+                attachment_type=allure.attachment_type.PNG
+            )
