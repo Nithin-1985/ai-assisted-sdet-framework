@@ -7,6 +7,7 @@ from config.settings import (
     API_USERNAME,
     API_PASSWORD,
     BROWSER,
+    ENVIRONMENT,
 )
 
 from playwright.sync_api import Page
@@ -80,3 +81,13 @@ def pytest_runtest_makereport(item, call):
                 name="Failure Screenshot",
                 attachment_type=allure.attachment_type.PNG
             )
+
+
+def pytest_sessionstart(session):
+    os.makedirs("allure-results", exist_ok=True)
+
+    with open("allure-results/environment.properties", "w") as file:
+        file.write(
+            f"Environment={ENVIRONMENT}\n"
+            f"Browser={BROWSER}\n"
+        )

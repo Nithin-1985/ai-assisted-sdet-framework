@@ -11,7 +11,6 @@ def test_login_form(login_page):
         expect(login_page.page).to_have_url(
             "https://the-internet.herokuapp.com/secure"
         )
-
         expect(
             login_page.page.get_by_text("You logged into a secure area!")
         ).to_be_visible()
