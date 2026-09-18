@@ -7,6 +7,7 @@ BASE_URL = os.getenv("BASE_URL")
 API_USERNAME = os.getenv("API_USERNAME")
 API_PASSWORD = os.getenv("API_PASSWORD")
 BROWSER = os.getenv("BROWSER")
+ENVIRONMENT = os.getenv("ENVIRONMENT")
 
 
 values = {
@@ -14,6 +15,7 @@ values = {
     "API_USERNAME": API_USERNAME,
     "API_PASSWORD": API_PASSWORD,
     "BROWSER": BROWSER,
+    "ENVIRONMENT": ENVIRONMENT,
 }
 
 missing = [name for name, value in values.items() if value is None]
