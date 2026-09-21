@@ -1,5 +1,6 @@
 
 import pytest
+pytestmark = pytest.mark.api
 
 @pytest.mark.parametrize(
     "user_id, expected_name, expected_email",
