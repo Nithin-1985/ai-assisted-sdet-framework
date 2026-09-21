@@ -1,6 +1,9 @@
 import pytest
 import os
 import allure
+import json
+from test_data.data_loader import load_json
+
 
 from config.settings import (
     BASE_URL,
@@ -31,10 +34,13 @@ def login_page(page: Page):
     return LoginPage(page)
 
 @pytest.fixture
-def logged_in_page(login_page):
+def logged_in_page(login_page,login_data):
+    valid_user = login_data["valid_user"]
     login_page.open()
-    login_page.login("tomsmith", "SuperSecretPassword!")
-
+    login_page.login(
+        valid_user["username"],
+        valid_user["password"]
+    )
     return login_page.page
 
 
@@ -91,3 +97,8 @@ def pytest_sessionstart(session):
             f"Environment={ENVIRONMENT}\n"
             f"Browser={BROWSER}\n"
         )
+
+
+@pytest.fixture(scope="session")
+def login_data():
+    return load_json("login_data.json")
