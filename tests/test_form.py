@@ -1,6 +1,11 @@
 from playwright.sync_api import Page, expect
 import allure
+import pytest
 
+pytestmark = pytest.mark.ui
+
+
+@pytest.mark.smoke
 @allure.feature("Authentication")
 @allure.story("Login")
 @allure.title("Login with valid credentials")
