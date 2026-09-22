@@ -30,7 +30,12 @@ def test_login_form(login_page, login_data):
 @allure.feature("Authentication")
 @allure.story("Login")
 @allure.title("Login with invalid password")
-@pytest.mark.parametrize("invalid_user", load_invalid_users())
+@pytest.mark.parametrize("invalid_user", load_invalid_users(),
+    ids=[
+        "wrong_password",
+        "wrong_username",
+        "wrong_username_and_password"
+    ])
 def test_login_with_invalid_password(page: Page, login_page, invalid_user):
 
     login_page.open()

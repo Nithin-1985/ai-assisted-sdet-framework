@@ -1,0 +1,2 @@
+class PageNotReadyError(Exception):
+    pass

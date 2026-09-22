@@ -13,7 +13,7 @@ from config.settings import (
     ENVIRONMENT,
 )
 
-from playwright.sync_api import Page
+from playwright.sync_api import Page ,TimeoutError
 from pages.login_page import LoginPage
 from api.client import APIClient
 from config.settings import BASE_URL
