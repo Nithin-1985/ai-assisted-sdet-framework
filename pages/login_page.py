@@ -1,7 +1,8 @@
 from config.logger import setup_logger
 logger = setup_logger(__name__)
-from playwright.sync_api import Page
+from playwright.sync_api import Page ,TimeoutError
 import allure
+from utils.exceptions import PageNotReadyError
 
 
 class LoginPage:
@@ -17,7 +18,14 @@ class LoginPage:
     def open(self):
         logger.info("Opening login page")
         self.page.goto("https://the-internet.herokuapp.com/login")
-        self.username_input.wait_for(state="visible")
+        
+        try:
+            self.username_input.wait_for(state="visible")
+        except TimeoutError as error:
+            logger.error(f"Login page did not become ready: {error}")
+            raise PageNotReadyError(
+                "Login page did not become ready"
+            ) from error
         logger.info("Login page opened successfully")
 
     @allure.step("Login as user: {username}")
