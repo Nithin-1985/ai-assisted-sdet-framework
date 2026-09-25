@@ -1,4 +1,4 @@
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, Browser, expect
 
 
 def test_browser_context_isolation():
@@ -51,3 +51,28 @@ def test_new_tab(page):
 
     print("Original page:", page.title())
     print("New page:", new_page.title())
+
+
+def test_save_auth_state(page):
+
+    page.goto("https://the-internet.herokuapp.com/login")
+
+    page.get_by_label("Username").fill("tomsmith")
+    page.get_by_label("Password").fill("SuperSecretPassword!")
+    page.get_by_role("button", name="Login").click()
+
+    page.context.storage_state(
+        path="auth_state.json"
+    )
+
+
+def test_reuse_auth_state(authenticated_page):
+
+    authenticated_page.goto(
+        "https://the-internet.herokuapp.com/secure"
+    )
+
+    expect(authenticated_page).to_have_url(
+        "https://the-internet.herokuapp.com/secure"
+    )
+

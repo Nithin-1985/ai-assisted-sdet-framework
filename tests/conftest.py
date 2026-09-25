@@ -102,4 +102,37 @@ def pytest_sessionstart(session):
 @pytest.fixture(scope="session")
 def login_data():
     return load_json("login_data.json")
-    name
+
+
+@pytest.fixture(scope="session")
+def auth_state(browser, login_data):
+    context = browser.new_context()
+    page = context.new_page()
+
+    login_page = LoginPage(page)
+
+    valid_user = login_data["valid_user"]
+
+    login_page.open()
+    login_page.login(
+        valid_user["username"],
+        valid_user["password"]
+    )
+    
+
+    auth_file = "auth_state.json"
+    context.storage_state(path=auth_file)
+    context.close()
+    return auth_file
+
+@pytest.fixture
+def authenticated_page(browser, auth_state):
+    context = browser.new_context(
+        storage_state=auth_state
+    )
+
+    page = context.new_page()
+
+    yield page
+
+    context.close()
