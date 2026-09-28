@@ -76,3 +76,27 @@ def test_reuse_auth_state(authenticated_page):
         "https://the-internet.herokuapp.com/secure"
     )
 
+
+def test_locator_chaining(page):
+    page.goto("https://www.saucedemo.com/")
+
+    page.get_by_placeholder("Username").fill("standard_user")
+    page.get_by_placeholder("Password").fill("secret_sauce")
+    page.get_by_role("button", name="Login").click()
+    product = page.locator(".inventory_item").filter(
+    has_text="Sauce Labs Backpack"
+    )
+
+    product.get_by_role(
+        "button",
+        name="Add to cart"
+    ).click()
+
+    expect(
+    product.get_by_role("button", name="Remove")
+    ).to_be_visible()
+
+    page.locator('[data-test="shopping-cart-link"]').click()
+    expect(
+    page.get_by_text("Sauce Labs Backpack")
+    ).to_be_visible()
