@@ -1,3 +1,6 @@
+from playwright.sync_api import expect
+
+
 def test_observe_network(page):
     page.on(
         "response",
@@ -118,3 +121,58 @@ def test_intercept_and_abort(page):
     page.evaluate("""
         fetch("https://jsonplaceholder.typicode.com/posts")
     """)
+
+def test_mock_response(page):
+
+    def handle_route(route):
+        route.fulfill(
+            status=200,
+            content_type="application/json",
+            body='{"name": "Nithin", "role": "admin"}'
+        )
+
+    page.route("**/users/1", handle_route)
+
+    page.goto("https://www.saucedemo.com/")
+
+    result = page.evaluate("""
+        fetch("https://jsonplaceholder.typicode.com/users/1")
+            .then(response => response.json())
+    """)
+
+    print(result)
+
+def test_mock_api_for_ui(page):
+
+    def handle_route(route):
+        response = route.fetch()
+        body = response.json()
+        print("Real name:", body["name"])
+
+        body["name"] = "Nithin"
+
+        route.fulfill(
+            response=response,
+            json=body
+        )
+
+    page.route("**/users/1", handle_route)
+
+    page.set_content("""
+    <button onclick="loadUser()">Load User</button>
+    <div id="result"></div>
+
+    <script>
+        async function loadUser() {
+            const response = await fetch(
+                "https://jsonplaceholder.typicode.com/users/1"
+            );
+
+            const data = await response.json();
+
+            document.getElementById("result").innerText = data.name;
+        }
+    </script>
+    """)
+    page.get_by_role("button", name="Load User").click()
+    expect(page.get_by_text("Nithin")).to_be_visible()
