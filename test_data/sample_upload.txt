@@ -1,0 +1,2 @@
+Hello from Playwright!
+This file is used for learning file upload automation.
