@@ -41,6 +41,11 @@ pipeline {
     always {
         archiveArtifacts artifacts: 'allure-results/**',
                          allowEmptyArchive: true
+
+        allure([
+            results: [[path: 'allure-results']],
+            reportBuildPolicy: 'ALWAYS'
+        ])
     }
     }
 }
