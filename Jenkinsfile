@@ -1,6 +1,15 @@
 pipeline {
     agent any
 
+    environment {
+        BASE_URL = 'https://jsonplaceholder.typicode.com'
+        API_USERNAME = 'testuser'
+        API_PASSWORD = 'test123'
+        BROWSER = 'chromium'
+        ENVIRONMENT = 'CI'
+    }
+
+
     stages {
         stage('Verify Checkout') {
             steps {
