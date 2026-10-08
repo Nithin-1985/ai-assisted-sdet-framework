@@ -36,4 +36,11 @@ pipeline {
             }
         }
     }
+
+    post {
+    always {
+        archiveArtifacts artifacts: 'allure-results/**',
+                         allowEmptyArchive: true
+    }
+    }
 }
