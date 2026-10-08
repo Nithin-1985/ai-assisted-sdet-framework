@@ -14,12 +14,17 @@ pipeline {
             steps {
                 sh 'python3 -m venv .venv'
                 sh '.venv/bin/python -m pip install -r requirements.txt'
-    }
-    }
+            }
+        }
         stage('Install Playwright Browser') {
             steps {
                 sh '.venv/bin/python -m playwright install chromium'
-    }
-}
+            }
+        }
+        stage('Execute Tests') {
+            steps {
+                sh '.venv/bin/python -m pytest tests/test_dialogs_frames.py -v'
+            }
+        }
     }
 }
