@@ -16,6 +16,7 @@ def test_alert_dialog(page: Page):
     """)
 
     page.get_by_role("button", name="Show Alert").click()
+    assert False, "Intentional failure to verify Jenkins quality gate"
 
 
 
